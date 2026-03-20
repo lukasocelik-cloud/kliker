@@ -1,66 +1,20 @@
-import { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function App() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    loadCount();
-  }, []);
-
-  useEffect(() => {
-    saveCount(count);
-  }, [count]);
-
-  const saveCount = async (value) => {
-    try {
-      await AsyncStorage.setItem('count', value.toString());
-    } catch (e) {}
-  };
-
-  const loadCount = async () => {
-    try {
-      const value = await AsyncStorage.getItem('count');
-      if (value !== null) {
-        setCount(parseInt(value));
-      }
-    } catch (e) {}
-  };
-
-  const confirmReset = () => {
-    Alert.alert(
-      "Potvrzení",
-      "Opravdu chceš resetovat?",
-      [
-        {
-          text: "Ne",
-          style: "cancel"
-        },
-        {
-          text: "Ano",
-          onPress: () => setCount(0)
-        }
-      ]
-    );
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.counter}>{count}</Text>
+      <Text style={styles.title}>Kliker</Text>
+
+      <Text style={styles.score}>{count}</Text>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => setCount(count + 1)}
       >
-        <Text style={styles.buttonText}>KLIK</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.resetButton}
-        onPress={confirmReset}
-      >
-        <Text style={styles.buttonText}>RESET</Text>
+        <Text style={styles.buttonText}>KLIKNI</Text>
       </TouchableOpacity>
     </View>
   );
@@ -69,22 +23,23 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#121212',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  counter: {
-    fontSize: 60,
-    marginBottom: 40,
+  title: {
+    fontSize: 30,
+    color: 'white',
+    marginBottom: 20,
+  },
+  score: {
+    fontSize: 50,
+    color: '#4CAF50',
+    marginBottom: 20,
   },
   button: {
     backgroundColor: '#4CAF50',
     padding: 20,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  resetButton: {
-    backgroundColor: '#f44336',
-    padding: 15,
     borderRadius: 10,
   },
   buttonText: {
